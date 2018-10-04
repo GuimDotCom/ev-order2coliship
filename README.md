@@ -21,9 +21,6 @@ ColiShip is a software provided by La Poste to create shipping labels. ([website
 ### Mandatory requirements
 * [Prestashop](https://www.prestashop.com) v. 1.7+
 
-## Contributing
-**Bug fixes** and **new features** can be proposed using [pull requests](https://github.com/guillaum/ev_order2coliship/pulls).
-
 ## Support
 This project is actively maintained, but there is no official support channel.
 If you have a question that another developer might help you with, please contact us on [Everlats.com](http://www.everlats.com/contact/) with your question.
