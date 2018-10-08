@@ -19,5 +19,5 @@ $_MODULE['<{ev_order2coliship}prestashop>ev_order2coliship_96610a96cd3c469485566
 $_MODULE['<{ev_order2coliship}prestashop>ev_order2coliship_b17f3f4dcf653a5776792498a9b44d6a'] = 'Enregistrer les réglages';
 $_MODULE['<{ev_order2coliship}prestashop>adminorder2colishipcontroller_9ac52b4263427c3c6b26a136dd5c8003'] = 'Commandes vers ColiShip';
 $_MODULE['<{ev_order2coliship}prestashop>adminorder2colishipcontroller_7258e7251413465e0a3eb58094430bde'] = 'Administration';
-$_MODULE['<{ev_order2coliship}prestashop>order2coliship_7cdf523112a09c58feb118aeb62f81bc'] = 'Aucune commande ne correspond au statut configuré. Rien n\'a exporter !';
+$_MODULE['<{ev_order2coliship}prestashop>order2coliship_7cdf523112a09c58feb118aeb62f81bc'] = 'Aucune commande ne correspond au statut configuré. Rien à exporter !';
 $_MODULE['<{ev_order2coliship}prestashop>order2coliship_f7c5ade9f73010b2d15e3363dc635b6e'] = 'Vous pouvez vérifier votre configuration ici.';
