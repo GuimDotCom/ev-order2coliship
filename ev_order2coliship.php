@@ -119,7 +119,8 @@ class EV_Order2Coliship extends Module
         		<td style="vertical-align: top;">
         		<b>'.$this->l('This module allows you to download package information into a TXT file for ColiShip.').'</b><br />
         		'.$this->l('ColiShip is a software provided by La Poste to create shipping labels. (website: https://www.colissimo.fr/entreprise/coliship/)').'<br />
-        		<br />'.$this->l('Please set the order status of orders that will be exported (example: processing status).').'<br /></td></tr></table><br />';
+        		<br />'.$this->l('Please change the token below to secure your data.').'<br />
+        		<br />'.$this->l('Please set the order status ID of orders that will be exported (example: 3, which is the processing status).').'<br /></td></tr></table><br />';
     }
 
     public function displayFormSettings()
@@ -133,7 +134,7 @@ class EV_Order2Coliship extends Module
         		<fieldset>
         			<legend><img src="../img/admin/contact.gif" />'.$this->l('Settings').'</legend>
               <br/>
-        			<label>'.$this->l('Order Status to export').'</label>
+        			<label>'.$this->l('Order Status ID').'</label>
         			<div class="margin-form">
         			    <select name="ev_coliship_status_export">';
         			foreach($content as $c) {
@@ -146,7 +147,10 @@ class EV_Order2Coliship extends Module
 
         			$this->_html .= '</select></div><center><input type="submit" name="submitEvo2c" value="'.$this->l('Update settings').'" class="button" /></center>
         		</fieldset>
-        		</form>';
+        		</form>
+        		<br/>
+     		    <p><a href="https://www.diffuseurs-dessentielles.com/?utm_source=prestashop-module&utm_medium=banner&utm_campaign=order2coliship" target="_blank"><img src="https://www.diffuseurs-dessentielles.com/media/banner/banner400x263.jpg" alt="Diffuseurs d\'Essentielles"/></a></p>
+';
     }
 
     protected function getListStatuses($id_lang)
