@@ -14,7 +14,8 @@ ColiShip is a software provided by La Poste to create shipping labels. ([website
 * cd modules/
 * mkdir ev_order2coliship
 * cd ev_order2coliship/
-* git clone git@gitlab.com:Guillaum/ev-order2coliship.git .
+* git clone https://github.com/Guillawme/ev-order2coliship.git .
+* chmod -R 775 ../ev_order2coliship/
 
 ## Requirements
 
