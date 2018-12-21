@@ -12,11 +12,12 @@ class EV_Order2Coliship extends Module
     function __construct()
     {
         $this->name = 'ev_order2coliship';
-        $this->version = '1.0.1';
+        $this->version = '1.2.0';
         $this->tab = 'administration';
         $this->page = basename(__FILE__, '.php');
         $this->author = 'Everlats.com';
         $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
+        $this->bootstrap = true;
 
         parent::__construct();
 
@@ -30,7 +31,7 @@ class EV_Order2Coliship extends Module
             return false;
         }
 
-        if (!$this->registerHook('displayAdminOrderTabShip') || !$this->registerHook('displayAdminOrderContentShip')  or !Configuration::updateValue('EV_COLISHIP_STATUS_EXPORT', '3') or !$this->installTab('AdminOrder2Coliship', 'Export ColiShip', 0, 'AdminParentOrders')) {
+        if (!$this->registerHook('displayAdminOrderTabShip') || !$this->registerHook('displayAdminOrderContentShip')  or !Configuration::updateValue('EV_COLISHIP_STATUS_EXPORT', '3') || !$this->registerHook('displayAdminOrder2ColishipListAfter') or !$this->installTab('AdminOrder2Coliship', 'Export ColiShip', 0, 'AdminParentOrders')) {
             return false;
         }
         return true;
@@ -75,7 +76,7 @@ class EV_Order2Coliship extends Module
                 $this->_postErrors[] = $this->l('Order status code to Export is required.');
             }
             if (!sizeof($this->_postErrors)) {
-                Configuration::updateValue('EV_COLISHIP_STATUS_EXPORT', $_POST['ev_coliship_status_export']);
+                Configuration::updateValue('EV_COLISHIP_STATUS_EXPORT', json_encode($_POST['ev_coliship_status_export']));
                 $this->displayConf();
             } else {
                 $this->displayErrors();
@@ -119,33 +120,41 @@ class EV_Order2Coliship extends Module
         		<td style="vertical-align: top;">
         		<b>'.$this->l('This module allows you to download package information into a TXT file for ColiShip.').'</b><br />
         		'.$this->l('ColiShip is a software provided by La Poste to create shipping labels. (website: https://www.colissimo.fr/entreprise/coliship/)').'<br />
-        		<br />'.$this->l('Please change the token below to secure your data.').'<br />
-        		<br />'.$this->l('Please set the order status ID of orders that will be exported (example: 3, which is the processing status).').'<br /></td></tr></table><br />';
+        		<br />'.$this->l('Please check one or more orders\' statuses that will appears in exported list (example: processing status).').'<br /></td></tr></table><br />';
     }
 
     public function displayFormSettings()
     {
-        $status = Configuration::get('EV_COLISHIP_STATUS_EXPORT');
+        $status_export = Configuration::get('EV_COLISHIP_STATUS_EXPORT');
+        $status_export = (array)json_decode($status_export);
 
-        $content = $this->getListStatuses((int)Configuration::get('PS_LANG_DEFAULT'));
+        $idLang = $this->context->language->id;
+        $statusesList = array();
+        $statuses = OrderState::getOrderStates((int) $idLang);
+        foreach ($statuses as $status) {
+            $statusesList[$status['id_order_state']] = $status['name'];
+        }
 
         $this->_html .= '
         		<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
         		<fieldset>
         			<legend><img src="../img/admin/contact.gif" />'.$this->l('Settings').'</legend>
               <br/>
-        			<label>'.$this->l('Order Status ID').'</label>
-        			<div class="margin-form">
-        			    <select name="ev_coliship_status_export">';
-        			foreach($content as $c) {
-          			  $this->_html .= '<option value="'.$c['id_order_state'].'"';
-          			  if($c['id_order_state'] == $status) {
-            			    $this->_html .= ' selected';
+        			<label>'.$this->l('Order Statuses List').'</label>
+        			<div class="margin-form">';
+        			foreach($statusesList as $status_id => $status_name) {
+          			  $this->_html .= '<div class="checkbox">
+                                    <label>
+                                      <input type="checkbox" name="ev_coliship_status_export[]" value="'.$status_id.'"';
+          			  if(in_array($status_id, $status_export)) {
+            			    $this->_html .= ' checked="checked"';
           			  }
-          			  $this->_html .= '>'.$c['name'].'</option>';
+                  $this->_html .= ' /> '.$status_name.'
+                                    </label>
+                                  </div>';
         			}
 
-        			$this->_html .= '</select></div><center><input type="submit" name="submitEvo2c" value="'.$this->l('Update settings').'" class="button" /></center>
+        			$this->_html .= '</div><center><input type="submit" name="submitEvo2c" value="'.$this->l('Update settings').'" class="button" /></center>
         		</fieldset>
         		</form>
         		<br/>
@@ -153,14 +162,13 @@ class EV_Order2Coliship extends Module
 ';
     }
 
-    protected function getListStatuses($id_lang)
+    /**
+     * @param array $params
+     */
+    public function hookdisplayAdminOrder2ColishipListAfter($params)
     {
-        $sql = '
-            SELECT os.`id_order_state`, osl.`name`
-            FROM `'._DB_PREFIX_.'order_state` os
-            LEFT JOIN `'._DB_PREFIX_.'order_state_lang` osl ON (os.`id_order_state` = osl.`id_order_state`)
-            WHERE `id_lang` = '.(int)$id_lang.' ORDER BY osl.`name`';
-
-        return  Db::getInstance()->executeS($sql);
+        return $this->context->smarty->display(
+            $this->local_path.'views/templates/hook/admin/displayAdminOrder2ColishipListAfter.tpl'
+        );
     }
 }

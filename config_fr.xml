@@ -2,7 +2,7 @@
 <module>
     <name>ev_order2coliship</name>
     <displayName><![CDATA[Commandes vers ColiShip]]></displayName>
-    <version><![CDATA[1.0.1]]></version>
+    <version><![CDATA[1.2.0]]></version>
     <description><![CDATA[Vous permet de t&eacute;l&eacute;charger un fichier contenant les informations des commandes pour les importer sur ColiShip (Colissimo).]]></description>
     <author><![CDATA[Everlats.com]]></author>
     <tab><![CDATA[administration]]></tab>
